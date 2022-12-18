@@ -1,0 +1,19 @@
+**.#build bin
+**/bin/
+!vendor/bin
+!KansGL/vendor/assimp/bin
+#build bin-int
+bin-int/
+#vs file
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+**.csproj
+**.nsight-gfxproj
+**.DotSettings
+**.user
+#vscode file
+.vscode/
+**.hdr
