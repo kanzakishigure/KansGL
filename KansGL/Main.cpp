@@ -56,13 +56,22 @@ namespace Kans
 		PBRshader.SetInt("irradianceMap", 0);
 		PBRshader.SetInt("prefilterMap", 1);
 		PBRshader.SetInt("brdfLUT", 2);
-		//弱模型带有pbr材质贴图
-		PBRshader.SetInt("albedoMap", 3);
-		PBRshader.SetInt("normalMap", 4);
-		PBRshader.SetInt("metallicMap", 5);
-		PBRshader.SetInt("roughnessMap", 6);
-		PBRshader.SetInt("aoMap", 7);
 		
+		
+		
+		
+		Shader pbrTextureShader(FileSystem::GetShaderPath("pbrTextureShader.glsl"));
+		//若是模型带有pbr材质贴图
+		pbrTextureShader.Bind();
+		pbrTextureShader.SetInt("irradianceMap", 0);
+		pbrTextureShader.SetInt("prefilterMap", 1);
+		pbrTextureShader.SetInt("brdfLUT", 2);
+
+		pbrTextureShader.SetInt("albedoMap", 3);
+		pbrTextureShader.SetInt("normalMap", 4);
+		pbrTextureShader.SetInt("armMap", 5);
+
+
 		//hdr环境贴图转换为CubeMap
 		Shader hdrToCubeMapShader(FileSystem::GetShaderPath("HdrToCubeMap.glsl"));
 
@@ -85,6 +94,23 @@ namespace Kans
 		//预计算 镜面反射的brdf,用于查表
 		Shader brdfShader(FileSystem::GetShaderPath("brdf.glsl"));
 
+
+
+		//加载贴图
+
+		Texture2D weathered_planks_diff = FileSystem::GetAssetPath("textures/pbr_texture/weathered_planks/weathered_planks_diff_2k.jpg");
+		Texture2D weathered_planks_nor = FileSystem::GetAssetPath("textures/pbr_texture/weathered_planks/weathered_planks_nor_gl_2k.jpg");
+		Texture2D weathered_planks_arm = FileSystem::GetAssetPath("textures/pbr_texture/weathered_planks/weathered_planks_arm_2k.png");
+
+
+
+
+
+
+
+
+
+
 		// lights
 		// ------
 		glm::vec3 lightPositions[] = {
@@ -106,7 +132,7 @@ namespace Kans
 		FrameBuffer framebuffer(512, 512);
 		
 		//加载hdr环境光贴图
-		HDRTexture hdrTexture = FileSystem::GetAssetPath("textures/hdr/newport_loft.hdr");
+		HDRTexture hdrTexture = FileSystem::GetAssetPath("textures/hdr/studio_country_hall_2k.hdr");
 		
 
 		
@@ -260,7 +286,7 @@ namespace Kans
 			glm::mat4 view = camera.GetViewMatrix();
 			
 
-
+			
 			{
 				//生成材质球行列数
 				int nrRows = 7;
@@ -279,7 +305,7 @@ namespace Kans
 				irradiancemap.Bind(0);
 				prefilterMap.Bind(1);
 				brdfLUTTexture.Bind(2);
-				irradiancemap.Bind();
+
 				glm::mat4 model = glm::mat4(1.0f);
 
 				model = glm::rotate(model, (float)glm::radians(90.0), glm::vec3(1.0, 0.0, 0.0));
@@ -291,6 +317,7 @@ namespace Kans
 				NativeModel::DrawQuad();
 				model = glm::mat4(1.0f);
 
+				
 				for (int row = 0; row < nrRows; ++row)
 				{
 					PBRshader.SetFloat("metallic", (float)row / (float)nrRows);
@@ -309,6 +336,10 @@ namespace Kans
 						NativeModel::DrawSphere();
 					}
 				}
+
+
+
+				PBRshader.Bind();
 				//渲染代表光源的球体,未实现bloom，所以使用球体代替光源，本身无发光效果
 				for (unsigned int i = 0; i < sizeof(lightPositions) / sizeof(lightPositions[0]); ++i)
 				{
@@ -325,6 +356,35 @@ namespace Kans
 				}
 			}
 
+
+			{
+				pbrTextureShader.Bind();
+				glm::mat4 model = glm::mat4(1.0f);
+				model = glm::translate(model, glm::vec3(0.0, -6, 5.0));
+				model = glm::scale(model, glm::vec3(2.0, 2.0, 2.0));
+				pbrTextureShader.SetMat4("model", model);
+
+				pbrTextureShader.SetMat4("projection", projection);
+				pbrTextureShader.SetMat4("view", view);
+				pbrTextureShader.SetFloat3("camPos", camera.Position);
+
+				pbrTextureShader.SetInt("irradianceMap", 0);
+				pbrTextureShader.SetInt("prefilterMap", 1);
+				pbrTextureShader.SetInt("brdfLUT", 2);
+
+				pbrTextureShader.SetInt("albedoMap", 3);
+				pbrTextureShader.SetInt("normalMap", 4);
+				pbrTextureShader.SetInt("armMap", 5);
+
+				irradiancemap.Bind(0);
+				prefilterMap.Bind(1);
+				brdfLUTTexture.Bind(2);
+				weathered_planks_diff.Bind(3);
+				weathered_planks_nor.Bind(4);
+				weathered_planks_arm.Bind(5);
+				
+				NativeModel::DrawSphere();
+			}
 			//渲染天空盒
 			{
 				skyboxShader.Bind();

@@ -192,6 +192,7 @@ namespace Kans
 				std::vector<GLchar> infolog(maxLength);
 				glGetShaderInfoLog(shader, maxLength, &maxLength, &infolog[0]);
 
+				std::cout << infolog.data()<<std::endl;
 				//É¾³ýshaderÎÄ¼þ
 				glDeleteShader(shader);
 				break;
@@ -215,6 +216,7 @@ namespace Kans
 			std::vector<GLchar> infolog(maxLength);
 			glGetProgramInfoLog(id, maxLength, &maxLength, &infolog[0]);
 
+			std::cout << infolog.data() << std::endl;
 			//·ÀÖ¹ÄÚ´æÐ¹Â©£¬É¾³ý³ÌÐò
 			glDeleteProgram(id);
 			// Í¬Àí.
