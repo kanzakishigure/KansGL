@@ -22,4 +22,4 @@
 > pause
 > ```
 >
-> 如果你想生成其他解决方案，清查看premake的 [文档](https://premake.github.io/)
+> 如果你想生成其他解决方案，请查看premake的 [文档](https://premake.github.io/)
