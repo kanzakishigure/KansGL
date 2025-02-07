@@ -2,13 +2,13 @@
 
 > KansGL是 一个opengl的学习demo,他的部分架构基于Kans3D,我所编写的一个渲染器，如果你对Kans3D感兴趣可以点击链接
 >
-> <img src="https://kanzakishigure.github.io/picx-images-hosting/kansGL/图片.44gchzkzry68.39larfu603.webp" alt="图片" />
+> [Kans3D](https://github.com/kanzakishigure/Kans3D)
 >
 > > 不过比较遗憾的是Kans3D的开源仓库已经有较长一段时间没有更新了，因为我正在重写老的的渲染管线，并逐步以Vulkan代替Opengl.
 >
 > 演示效果
 >
-> ![图片](https://cdn.staticaly.com/gh/KanShigure/image_repository@main/20221219/图片.44gchzkzry68.webp)
+> <img src="https://kanzakishigure.github.io/picx-images-hosting/kansGL/图片.44gchzkzry68.39larfu603.webp" alt="图片" />
 >
 > ### 如何构建
 >
